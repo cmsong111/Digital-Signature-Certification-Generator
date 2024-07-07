@@ -33,7 +33,8 @@
 
 <body class="container my-5">
 
-    <h1 class="mb-4">RSASSA-PSS 디지털 서명</h1>
+    <h1 class="mb-4">RSASSA-PSS 디지털 서명 </h1>
+
 
     <p>인증서에 사용할 RSA 키 쌍을 생성하고, 수료증에 대한 메시지를 생성하고 서명을 생성하고 검증하는 예제입니다.</p>
 
@@ -42,7 +43,7 @@
         <button type="button" class="btn btn-secondary" onclick="downloadRSAKeyPair()">Download RSA Key Pair</button>
     </div>
 
-
+    <h3>RSA Key Generation</h3>
     <div class="mb-4">
         <label for="privateKey" class="form-label">RSA Private Key (발급자용)</label>
         <textarea id="privateKey" class="form-control" rows="5" oninput="loadRSAKeyPair()"></textarea>
@@ -52,6 +53,9 @@
         <label for="publicKey" class="form-label">RSA Public Key (검증 홈페이지용)</label>
         <textarea id="publicKey" class="form-control" rows="5" oninput="loadRSAKeyPair()"></textarea>
     </div>
+    <hr>
+
+    <h3> Certificate Message </h3>
 
     <form id="messageForm" class="mb-4">
         <div class="mb-3">
@@ -66,6 +70,11 @@
         </div>
 
         <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" id="name" class="form-control" oninput="createJson()" placeholder="수여자" required>
+        </div>
+
+        <div class="mb-3">
             <label for="content" class="form-label">Content</label>
             <textarea id="content" class="form-control" rows="3" oninput="createJson()"
                 placeholder="위 사람은 GDSC DEU에서 열심히 활동하였으므로 이에 대한 수료증을 발급합니다." required></textarea>
@@ -77,23 +86,37 @@
         </div>
 
         <div class="mb-3">
-            <label for="creator" class="form-label">Creator</label>
-            <input type="text" id="creator" class="form-control" oninput="createJson()"
-                placeholder="GDSC DEU 23-24 Lead 김남주" required>
+            <label for="organization" class="form-label">Creator</label>
+            <input type="text" id="organization" class="form-control" oninput="createJson()"
+                placeholder="GDSC DEU 23-24 Lead" required>
         </div>
+
+
+        <div class="mb-3">
+            <label for="creator" class="form-label">Creator</label>
+            <input type="text" id="creator" class="form-control" oninput="createJson()" placeholder="김남주" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="template" class="form-label">Template Type</label>
+            <input type="text" id="name" class="form-control" placeholder="템플릿 이름 (Word 파일 명)" oninput="createJson()"
+                required>
+        </div>
+
     </form>
 
+    <hr>
+    <h3> JWS Code </h3>
     <div class="mb-3">
         <label for="json-body" class="form-label">Json Body</label>
         <textarea id="json-body" class="form-control" rows="5" readonly></textarea>
     </div>
 
     <div class="mb-3">
-        <label for="signature" class="form-label">Signature</label>
-        <textarea id="signature" class="form-control" oninput="verifySignature()" rows="5"></textarea>
+        <label for="jws_code" class="form-label">JWS Code</label>
+        <textarea id="jws_code" class="form-control" rows="5"></textarea>
     </div>
 
-    <button type="button" id="signature-result" class="btn btn-secondary">Verify Signature</button>
 
 </body>
 

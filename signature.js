@@ -62,18 +62,20 @@ function downloadRSAKeyPair() {
 function createJson(){
     const serialNumber = document.getElementById('SerialNumber').value;
     const title = document.getElementById('title').value;
+    const name = document.getElementById('name').value;
     const content = document.getElementById('content').value;
     const date = document.getElementById('date').value;
+    const organization = document.getElementById('organization').value;
     const creator = document.getElementById('creator').value;
 
-    const message = JSON.stringify({ serialNumber, title, content, date, creator });
+    const message = JSON.stringify({ serialNumber, title, name, content, date, organization, creator }, null, 2);
     document.getElementById('json-body').value = message;
 
-    generateSignature(message);
+    generateJwsCode(message);
     return message;
 }
 
-function generateSignature(message) {
+function generateJwsCode(message) {
 
     // RSA 키가 없으면 리턴
     if (!rsaKeypair) {
@@ -82,22 +84,49 @@ function generateSignature(message) {
 
     var oHeader = {alg: "PS256"};
     var sHeader = JSON.stringify(oHeader);
-    document.getElementById('signature').value = KJUR.jws.JWS.sign("PS256", sHeader, message, rsaKeypair.prvKeyObj);
+    document.getElementById('jws_code').value = KJUR.jws.JWS.sign("PS256", sHeader, message, rsaKeypair.prvKeyObj);
 
-    verifySignature();
 }
 
-function verifySignature() {
 
-    const signature = document.getElementById('signature').value;
+function verifyJWS() {
+    // JWS 코드와 공개키를 가져옵니다.
+    const jwsCode = document.getElementById("jws-code").value
+    const publicKey = document.getElementById("publicKey").value
+    let isValid = false
 
-    // RSA 키가 없으면 리턴
-    if (!rsaKeypair) {
-        return;
+    // JWS 코드와 공개키가 입력되지 않았을 경우 경고창을 띄웁니다.
+    if (document.getElementById("jws-code").value === "" || document.getElementById("publicKey").value === "") {
+        alert("JWS 코드 또는 공개키를 입력해주세요.")
+        return false
     }
+    
+    // JWS 코드를 검증합니다.
+    try {
+        isValid = KJUR.jws.JWS.verify(jwsCode, publicKey, ["PS256"])
+    } catch (e) {
+        alert("JWS 코드 또는 공개키가 올바르지 않습니다.")
+        isValid = false
+    }
+ 
+    // 검증 결과를 화면에 표시합니다.
+    document.getElementById("parse_result").className = isValid ? "btn btn-success" : "btn btn-danger"
+    document.getElementById("parse_result").innerText = isValid ? "검증 성공" : "검증 실패"
 
-    const isValid = KJUR.jws.JWS.verify(signature,  rsaKeypair.pubKeyObj,  ["PS256"]);
-    document.getElementById('signature-result').className = isValid ? 'btn btn-success' : 'btn btn-danger';
-    document.getElementById('signature-result').innerText = isValid ? '검증 성공' : '검증 실패';
+    // JWS 코드를 파싱합니다.
+    if (isValid) {
+        parseJWS(jwsCode)
+    }
+    // 결과를 반환합니다.
+    return isValid
 }
 
+function parseJWS() {
+    const jwsCode = document.getElementById("jws-code").value
+    const parsed = KJUR.jws.JWS.parse(jwsCode)
+    const header = parsed.headerObj
+    const payload = parsed.payloadObj
+
+    document.getElementById("header").innerText = JSON.stringify(header, null, 2)
+    document.getElementById("payload").innerText = JSON.stringify(payload, null, 2)
+}
