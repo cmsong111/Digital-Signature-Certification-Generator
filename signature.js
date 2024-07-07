@@ -1,16 +1,18 @@
 
 // RSA 전역 변수
-/** @type {JSEncrypt} */
-let rsa;
+let rsaKeypair;
+
 
 /**
  *  RSA Key Pair 생성
  */
 function createRSAKeyPair() {
-    rsa = new JSEncrypt({ default_key_size: 2048 });
-    rsa.getKey();
-    document.getElementById('privateKey').value = rsa.getPrivateKey();
-    document.getElementById('publicKey').value = rsa.getPublicKey();
+    rsaKeypair = KEYUTIL.generateKeypair("RSA", 1024);
+
+
+    document.getElementById('privateKey').value = KEYUTIL.getPEM(rsaKeypair.prvKeyObj, "PKCS1PRV");
+    document.getElementById('publicKey').value =  KEYUTIL.getPEM(rsaKeypair.pubKeyObj);
+    //document.getElementById('publicKey').value =  sRSAPubCertPEM
 }
 
 /**
@@ -25,10 +27,11 @@ function loadRSAKeyPair() {
         alert('키를 입력해주세요.');
         return;
     }
-   
-    rsa = new JSEncrypt();
-    rsa.setPrivateKey(privateKey.value);
-    rsa.setPublicKey(publicKey.value);
+
+    rsaKeypair = {
+        prvKeyObj: KEYUTIL.getKey(privateKey.value),
+        pubKeyObj: KEYUTIL.getKey(publicKey.value)
+    };
 }
     
 
@@ -52,6 +55,10 @@ function downloadRSAKeyPair() {
     element.click();
 }
 
+/**
+ * Json 생성 
+ * @returns  {string} message
+ */
 function createJson(){
     const serialNumber = document.getElementById('SerialNumber').value;
     const title = document.getElementById('title').value;
@@ -66,84 +73,31 @@ function createJson(){
     return message;
 }
 
-async function generateSignature(message) {
+function generateSignature(message) {
 
     // RSA 키가 없으면 리턴
-    if (!rsa) {
+    if (!rsaKeypair) {
         return;
     }
 
-    try{
-        // Json 메시지 서명
-        const msgBuffer = new TextEncoder().encode(message);
-        const privateKeyObj = await importKey(rsa.getPrivateKey(), 'private');
+    var oHeader = {alg: "PS256"};
+    var sHeader = JSON.stringify(oHeader);
+    document.getElementById('signature').value = KJUR.jws.JWS.sign("PS256", sHeader, message, rsaKeypair.prvKeyObj);
 
-        rsa.sign(msgBuffer, privateKeyObj).then(signature => {
-            document.getElementById('signature').value = signature;
-        });
-
-    } catch (e) {
-        console.error(e);
-        console.error('서명 생성 실패');
-
-    }
-
+    verifySignature();
 }
 
 function verifySignature() {
-    const serialNumber = document.getElementById('SerialNumber').value;
-    const publicKey = document.getElementById('publicKey').value;
+
     const signature = document.getElementById('signature').value;
-    const title = document.getElementById('title').value;
-    const content = document.getElementById('content').value;
-    const date = document.getElementById('date').value;
-    const creator = document.getElementById('creator').value;
 
-    const message = JSON.stringify({ serialNumber, title, content, date, creator });
-}
-
-
-function importKey(pem, type) {
-    const binaryDerString = window.atob(pem.split('\n').slice(1, -1).join(''));
-    const binaryDer = str2ab(binaryDerString);
-
-    return window.crypto.subtle.importKey(
-        'pkcs8',
-        binaryDer,
-        {
-            name: 'RSA-PSS',
-            hash: 'SHA-256',
-        },
-        true,
-        type === 'private' ? ['sign'] : ['verify']
-    );
-}
-
-function str2ab(str) {
-    const buf = new ArrayBuffer(str.length);
-    const bufView = new Uint8Array(buf);
-    for (let i = 0, strLen = str.length; i < strLen; i++) {
-        bufView[i] = str.charCodeAt(i);
+    // RSA 키가 없으면 리턴
+    if (!rsaKeypair) {
+        return;
     }
-    return buf;
+
+    const isValid = KJUR.jws.JWS.verify(signature,  rsaKeypair.pubKeyObj,  ["PS256"]);
+    document.getElementById('signature-result').className = isValid ? 'btn btn-success' : 'btn btn-danger';
+    document.getElementById('signature-result').innerText = isValid ? '검증 성공' : '검증 실패';
 }
 
-function arrayBufferToBase64(buffer) {
-    let binary = '';
-    const bytes = new Uint8Array(buffer);
-    const len = bytes.byteLength;
-    for (let i = 0; i < len; i++) {
-        binary += String.fromCharCode(bytes[i]);
-    }
-    return window.btoa(binary);
-}
-
-function base64ToArrayBuffer(base64) {
-    const binaryString = window.atob(base64);
-    const len = binaryString.length;
-    const bytes = new Uint8Array(len);
-    for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-    }
-    return bytes.buffer;
-}

@@ -8,11 +8,8 @@
     <meta name="description" content="RSASSA-PSS Signature Example">
 
     <!--  RSA Encryption and Decryption -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/2.3.1/jsencrypt.min.js"
-        integrity="sha512-zDvrqenA0eFJZCxBsryzUZcvihvNlEXbteMv62yRxdhR4s7K1aaz+LjsRyfk6M+YJLyAJEuuquIAI8I8GgLC8A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"
-        integrity="sha512-a+SUDuwNzXDvz4XrIcXHuCf089/iJAoN4lmrXJg18XnduKK6YlDHNRalv4yd1N40OKI80tFidF+rqTFKGPoWFQ=="
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/11.1.0/jsrsasign-all-min.js"
+        integrity="sha512-Eu9j+HZBor7muHf6IDWoWZ8FKVr6nKe9eIIVR28NEte4Y4GiYRlke26XGdR/re81XE/FfLoLYYVkvNk5GY9RvQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- Bootstrap CSS and JS -->
@@ -47,12 +44,12 @@
 
 
     <div class="mb-4">
-        <label for="privateKey" class="form-label">RSA Private Key (발급자 키)</label>
+        <label for="privateKey" class="form-label">RSA Private Key (발급자용)</label>
         <textarea id="privateKey" class="form-control" rows="5" oninput="loadRSAKeyPair()"></textarea>
     </div>
 
     <div class="mb-4">
-        <label for="publicKey" class="form-label">RSA Public Key (검증자 키 ex: 검증페이지)</label>
+        <label for="publicKey" class="form-label">RSA Public Key (검증 홈페이지용)</label>
         <textarea id="publicKey" class="form-control" rows="5" oninput="loadRSAKeyPair()"></textarea>
     </div>
 
@@ -93,10 +90,10 @@
 
     <div class="mb-3">
         <label for="signature" class="form-label">Signature</label>
-        <textarea id="signature" class="form-control" rows="5" readonly></textarea>
+        <textarea id="signature" class="form-control" oninput="verifySignature()" rows="5"></textarea>
     </div>
 
-    <button type="button" class="btn btn-secondary" onclick="verifySignature()">Verify Signature</button>
+    <button type="button" id="signature-result" class="btn btn-secondary">Verify Signature</button>
 
 </body>
 
