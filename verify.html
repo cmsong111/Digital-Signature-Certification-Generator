@@ -17,8 +17,15 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
 
+    <!-- pyscript -->
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <py-config src="./pyscript.toml"></py-config>
+    <py-script src="pdf.py"></py-script>
+
     <!-- my js -->
     <script src="signature.js"></script>
+
     <script>
         window.onload = function () {
             const url = new URL(window.location)
@@ -29,6 +36,7 @@
 </head>
 
 <body class="container my-5">
+
     <div class="container mb-4">
         <h1 class="mb-4">JWS Certificate Verification</h1>
         <p>전자서명된 JWS 인증서의 진위 여부를 검증하는 예제입니다.</p>
@@ -62,6 +70,12 @@
         <div class="mb-3">
             <button id="parse_result" class="btn btn-secondary">검증 결과
         </div>
+
+        <div id="download_area" class="d-none">
+            <button type="button" class="btn btn-primary" id="download">인증서/상장 다운로드
+            </button>
+        </div>
+
 </body>
 
 </html>

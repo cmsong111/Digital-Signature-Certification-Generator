@@ -113,6 +113,9 @@ function verifyJWS() {
     document.getElementById("parse_result").className = isValid ? "btn btn-success" : "btn btn-danger"
     document.getElementById("parse_result").innerText = isValid ? "검증 성공" : "검증 실패"
 
+    document.getElementById("download_area").className = isValid ? "d-block" : "d-none"
+    
+
     // JWS 코드를 파싱합니다.
     if (isValid) {
         parseJWS(jwsCode)
