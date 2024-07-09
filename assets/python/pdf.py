@@ -10,7 +10,7 @@ def downloadPdf(event):
     data = json.loads(document.getElementById("payload").value)
     print(data)
 
-    prs = Presentation("gdsc_deu_23-24.pptx")
+    prs = Presentation(data["template"])
     slide = prs.slides[0]
 
     # name -> data[name] 으로 변경

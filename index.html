@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 
 <head>
     <meta charset="UTF-8">
@@ -98,9 +98,11 @@
         </div>
 
         <div class="mb-3">
-            <label for="template" class="form-label">Template Type(개발중)</label>
-            <input type="text" id="name" class="form-control" placeholder="템플릿 이름 (PPTX 이름)" oninput="createJson()"
-                required>
+            <label for="template" class="form-label">Template Type</label>
+            <select id="template" class="form-select" oninput="createJson()" required>
+                <option value="gdsc_deu_23-24.pptx">GDSC DEU 23-24</option>
+                <option value="award.pptx">Award</option>
+            </select>
         </div>
 
     </form>

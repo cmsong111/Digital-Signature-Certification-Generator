@@ -67,8 +67,9 @@ function createJson(){
     const date = document.getElementById('date').value;
     const organization = document.getElementById('organization').value;
     const creator = document.getElementById('creator').value;
+    const template = document.getElementById('template').value;
 
-    const message = JSON.stringify({ serialNumber, title, name, content, date, organization, creator }, null, 2);
+    const message = JSON.stringify({ serialNumber, title, name, content, date, organization, creator , template }, null, 2);
     document.getElementById('json-body').value = message;
 
     generateJwsCode(message);

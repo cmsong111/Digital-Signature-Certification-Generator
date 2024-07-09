@@ -3,3 +3,7 @@ packages = ["python-pptx" ]
 [[fetch]]
 from = "https://raw.githubusercontent.com/cmsong111/Digital-Signature-Certification-Generator/main/template/gdsc_deu_23-24.pptx"
 name = "gdsc_deu_23-24.pptx"
+
+[[fetch]]
+from = "https://raw.githubusercontent.com/cmsong111/Digital-Signature-Certification-Generator/main/template/award.pptx"
+name = "award.pptx"

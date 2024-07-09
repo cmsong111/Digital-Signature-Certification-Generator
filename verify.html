@@ -1,30 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
+---
+# Feel free to add content and custom Front Matter to this file.
+# To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
+
+layout: post
+title: JWS Certificate Verification
+---
+
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
     <!--  RSA Encryption and Decryption -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/11.1.0/jsrsasign-all-min.js"
         integrity="sha512-Eu9j+HZBor7muHf6IDWoWZ8FKVr6nKe9eIIVR28NEte4Y4GiYRlke26XGdR/re81XE/FfLoLYYVkvNk5GY9RvQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <!-- Bootstrap CSS and JS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
-
     <!-- pyscript -->
     <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
     <script defer src="https://pyscript.net/latest/pyscript.js"></script>
-    <py-config src="./pyscript.toml"></py-config>
-    <py-script src="pdf.py"></py-script>
+    <py-config src="/Digital-Signature-Certification-Generator/assets/python/pyscript.toml"></py-config>
+    <py-script src="/Digital-Signature-Certification-Generator/assets/python/pdf.py"></py-script>
 
     <!-- my js -->
-    <script src="signature.js"></script>
+    <script src="/Digital-Signature-Certification-Generator/assets/js/signature.js"></script>
 
     <script>
         window.onload = function () {
@@ -35,47 +31,43 @@
     </script>
 </head>
 
-<body class="container my-5">
 
-    <div class="container mb-4">
-        <h1 class="mb-4">JWS Certificate Verification</h1>
-        <p>전자서명된 JWS 인증서의 진위 여부를 검증하는 예제입니다.</p>
 
-        <!-- JWS 코드 Text Area -->
-        <div class="mb-3">
-            <label for="jws-code" class="form-label">JWS Code</label>
-            <textarea id="jws-code" class="form-control" rows="5" placeholder="JWS Code"></textarea>
-        </div>
+<div class="container mb-4">
+    <h1 class="mb-4">JWS Certificate Verification</h1>
+    <p>전자서명된 JWS 인증서의 진위 여부를 검증하는 예제입니다.</p>
 
-        <!-- JWS 검증 키 공개키 입력 -->
-        <div class="mb-3">
-            <label for="publicKey" class="form-label">Public Key</label>
-            <textarea id="publicKey" class="form-control" rows="5" placeholder="Public Key"></textarea>
-        </div>
+    <!-- JWS 코드 Text Area -->
+    <div class="mb-3">
+        <label for="jws-code" class="form-label">JWS Code</label>
+        <textarea id="jws-code" class="form-control" rows="5" placeholder="JWS Code"></textarea>
+    </div>
 
-        <!-- 검증 버튼 -->
-        <div class="mb-3">
-            <button onclick="verifyJWS()" class="btn btn-primary">Verify</button>
-        </div>
+    <!-- JWS 검증 키 공개키 입력 -->
+    <div class="mb-3">
+        <label for="publicKey" class="form-label">Public Key</label>
+        <textarea id="publicKey" class="form-control" rows="5" placeholder="Public Key"></textarea>
+    </div>
 
-        <!-- Json 파싱 결과 -->
-        <div class="mb-3">
-            <label for="header" class="form-label">Header</label>
-            <textarea id="header" class="form-control" rows="5" placeholder='header' readonly></textarea>
-        </div>
-        <div class="mb-3">
-            <label for="payload" class="form-label">Payload</label>
-            <textarea id="payload" class="form-control" rows="5" placeholder="payload" readonly></textarea>
-        </div>
-        <div class="mb-3">
-            <button id="parse_result" class="btn btn-secondary">검증 결과
-        </div>
+    <!-- 검증 버튼 -->
+    <div class="mb-3">
+        <button onclick="verifyJWS()" class="btn btn-primary">Verify</button>
+    </div>
 
-        <div id="download_area" class="d-none">
-            <button type="button" class="btn btn-primary" id="download">인증서/상장 다운로드
-            </button>
-        </div>
+    <!-- Json 파싱 결과 -->
+    <div class="mb-3">
+        <label for="header" class="form-label">Header</label>
+        <textarea id="header" class="form-control" rows="5" placeholder='header' readonly></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="payload" class="form-label">Payload</label>
+        <textarea id="payload" class="form-control" rows="5" placeholder="payload" readonly></textarea>
+    </div>
+    <div class="mb-3">
+        <button id="parse_result" class="btn btn-secondary">검증 결과
+    </div>
 
-</body>
-
-</html>
+    <div id="download_area" class="d-none">
+        <button type="button" class="btn btn-primary" id="download">인증서/상장 다운로드
+        </button>
+    </div>
