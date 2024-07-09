@@ -1,6 +1,6 @@
 # Generate Certification 
 - name: generate
-  link: /generate/
+  link: /generate
 # Verify Certification
 - name: verify
-  link: /verify/
+  link: /verify

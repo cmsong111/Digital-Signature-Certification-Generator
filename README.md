@@ -26,6 +26,6 @@
 
 ```json
 {
-  "signature": "qwiofhqwfoihqowinefowq" // RSASSA-PSS로 생성된 전자서명
+  "signature": "eyJhbGciOiJQUzI1NiJ9..." // RSASSA-PSS로 생성된 전자서명
 }
 ```
