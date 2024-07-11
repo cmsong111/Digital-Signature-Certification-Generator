@@ -14,61 +14,75 @@ title: JWS Certificate Verification
         integrity="sha512-Eu9j+HZBor7muHf6IDWoWZ8FKVr6nKe9eIIVR28NEte4Y4GiYRlke26XGdR/re81XE/FfLoLYYVkvNk5GY9RvQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <!-- pyscript -->
-    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
-    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
-    <py-config src="/Digital-Signature-Certification-Generator/assets/python/pyscript.toml"></py-config>
-    <py-script src="/Digital-Signature-Certification-Generator/assets/python/pdf.py"></py-script>
-
     <!-- my js -->
     <script src="/Digital-Signature-Certification-Generator/assets/js/signature.js"></script>
 
+
     <script>
+        const public_key =
+            `
+            -----BEGIN PUBLIC KEY-----
+            MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCLg74hvRtnQLhuRNQX4DH+UAlg
+            PWPp9ElCPDNOrPde4g6UkXNy305Wv87cSLF+zhbnAmPI2Zkda999hbWe7iJPFPDk
+            fO4YRR3IyyzX4XQTfjNAi8fRUevcdT3x4BRCesNcGqyiVuAwhUruMEpScixSUPsV
+            ghAEalublUWxNPlwcwIDAQAB
+            -----END PUBLIC KEY-----
+            `;
         window.onload = function () {
-            const url = new URL(window.location)
-            const jwsCode = url.searchParams.get("code")
-            document.getElementById("jws-code").value = jwsCode
+            const url = new URL(window.location);
+            const jwsCode = url.searchParams.get("code");
+            document.getElementById("jws-code").value = jwsCode;
+            document.getElementById("publicKey").innerText = public_key;
+            loadRSAKeyPair();
+            parseJWS();
+
         }
+
     </script>
 </head>
 
 
 
-<div class="container mb-4">
-    <h1 class="mb-4">JWS Certificate Verification</h1>
-    <p>전자서명된 JWS 인증서의 진위 여부를 검증하는 예제입니다.</p>
 
-    <!-- JWS 코드 Text Area -->
-    <div class="mb-3">
-        <label for="jws-code" class="form-label">JWS Code</label>
-        <textarea id="jws-code" class="form-control" rows="5" placeholder="JWS Code"></textarea>
-    </div>
+<h1 class="mb-4">JWS Certificate Verification</h1>
+<p class="lead">전자서명된 JWS 인증서의 진위 여부를 검증하는 예제입니다.</p>
 
-    <!-- JWS 검증 키 공개키 입력 -->
-    <div class="mb-3">
-        <label for="publicKey" class="form-label">Public Key</label>
-        <textarea id="publicKey" class="form-control" rows="5" placeholder="Public Key"></textarea>
+<!-- JWS 코드 Text Area -->
+<div class="mb-3">
+    <label for="jws-code" class="form-label">JWS Code</label>
+    <textarea id="jws-code" class="form-control" rows="5" placeholder="JWS Code" oninput="parseJWS()"></textarea>
+    <div class="invalid-feedback">
+        Please provide a valid JWS Code.
     </div>
+</div>
 
-    <!-- 검증 버튼 -->
-    <div class="mb-3">
-        <button onclick="verifyJWS()" class="btn btn-primary">Verify</button>
+<!-- JWS 검증 키 공개키 입력 -->
+<div class="mb-3">
+    <label for="publicKey" class="form-label">Public Key</label>
+    <textarea id="publicKey" class="form-control" rows="5" placeholder="Public Key"
+        oninput="loadRSAKeyPair()"></textarea>
+    <div class="invalid-feedback">
+        Please provide a valid RSA Private Key.
     </div>
+</div>
 
-    <!-- Json 파싱 결과 -->
-    <div class="mb-3">
-        <label for="header" class="form-label">Header</label>
-        <textarea id="header" class="form-control" rows="5" placeholder='header' readonly></textarea>
-    </div>
-    <div class="mb-3">
-        <label for="payload" class="form-label">Payload</label>
-        <textarea id="payload" class="form-control" rows="5" placeholder="payload" readonly></textarea>
-    </div>
-    <div class="mb-3">
-        <button id="parse_result" class="btn btn-secondary">검증 결과
-    </div>
+<!-- Json 파싱 결과 -->
+<div class="mb-3">
+    <label for="header" class="form-label">Header</label>
+    <textarea id="header" class="form-control" rows="5" placeholder='header' readonly></textarea>
+</div>
+<div class="mb-3">
+    <label for="payload" class="form-label">Payload</label>
+    <textarea id="payload" class="form-control" rows="5" placeholder="payload" readonly></textarea>
+</div>
+<div class="mb-3">
+    <button id="parse_result" class="btn btn-secondary">검증 결과
+</div>
 
-    <div id="download_area" class="d-none">
-        <button type="button" class="btn btn-primary" id="download">인증서/상장 다운로드
-        </button>
-    </div>
+<div id="download_area" class="d-none">
+
+    <!--팝업창 띄우기  -->
+    <button type="button" class="btn btn-primary" id="download"
+        onclick="window.open('/Digital-Signature-Certification-Generator/gen_cert?data=' + document.getElementById('payload').value, '_blank' );">
+        <i class="bi bi-download"></i>인증서/상장 다운로드
+</div>

@@ -16,88 +16,101 @@ title: JWS Certificate Verification
 
     <script src="/Digital-Signature-Certification-Generator/assets/js/signature.js"></script>
     <script>
+        const public_key =
+            `
+            -----BEGIN RSA PRIVATE KEY-----
+            MIICXAIBAAKBgQCLg74hvRtnQLhuRNQX4DH+UAlgPWPp9ElCPDNOrPde4g6UkXNy
+            305Wv87cSLF+zhbnAmPI2Zkda999hbWe7iJPFPDkfO4YRR3IyyzX4XQTfjNAi8fR
+            UevcdT3x4BRCesNcGqyiVuAwhUruMEpScixSUPsVghAEalublUWxNPlwcwIDAQAB
+            AoGATYdJajBPgSJrGwPupNH2li9d9nhHBKS27TLNBESENtsCZTcq48QKIZT3XFyd
+            Hi1idr9SOjQJrVrb2EIseoQ01c9duXDhd2l9yz6Kje3rr8MqXdhzqvqioKsp5v9C
+            +EHhkZJssCqFlBfnfuvJTbxtrTgwMLm716RnK+7C28NOggkCQQDZb9ZoPtCpflQ+
+            LoJrEDMVd2CMWiSsZBPS7u8XykcpgAxbYUW171yn+IiIe1XtMW2gUQ8X6MLS6Wv5
+            d96MiESXAkEApEILtSoJjbXfofo0TxePziFvKGCjmQcuOtyJoZtkMhM98vjR1W4n
+            2OHaK9EybAe5aWJa3XxvQluSAyENmPRihQJBAKvsdQBqInzSCXQ9PBvBbFLd2DZB
+            lFvGqbIQAHa0Fv5mY97hE8ieIYoixnn7414vxfmL/j4uadVwgVJ4iDxgBrMCQGO8
+            vsMoXViw4LPH609DLUyqvIY19+CJnaacFu4MHtDRIkKQl0kTdBqbORB2HDnAjvLQ
+            iAAI+L3AQG6p+UmwyskCQFKzZDFSRNnfmi3P3F77ROdjFAzysU+NPbaSa9gIPfeP
+            aRcuhJEMOUTwGnOlZqyW3TbhkCg1jd9Xu3wIDhJZDkU=
+            -----END RSA PRIVATE KEY-----
+            `;
+
         // 발급일자를 현재 날짜로 설정
         window.onload = function () {
             document.getElementById("date").value = new Date().toISOString().substring(0, 10);;
+            document.getElementById("privateKey").innerText = public_key;
             createJson()
         }
     </script>
 
 </head>
 
-<h1 class="mb-4">RSASSA-PSS 디지털 서명 </h1>
+<h1 class="mb-4">JWS Certification Generater</h1>
 
 
-<p>인증서에 사용할 RSA 키 쌍을 생성하고, 수료증에 대한 메시지를 생성하고 서명을 생성하고 검증하는 예제입니다.</p>
+<p class="lead">인증서에 사용할 RSA 키 쌍을 생성하고, 수료증에 대한 메시지를 생성하고 서명을 생성하고 검증하는 예제입니다.</p>
 
-<div class="mb-3">
-    <button type="button" class="btn btn-primary" onclick="createRSAKeyPair()">Create RSA Key Pair</button>
-    <button type="button" class="btn btn-secondary" onclick="downloadRSAKeyPair()">Download RSA Key Pair</button>
-</div>
-
-<h3>RSA Key Generation</h3>
-<div class="mb-4">
-    <label for="privateKey" class="form-label">RSA Private Key (발급자용)</label>
-    <textarea id="privateKey" class="form-control" rows="5" oninput="loadRSAKeyPair()"></textarea>
-</div>
-
-<div class="mb-4">
-    <label for="publicKey" class="form-label">RSA Public Key (검증 홈페이지용)</label>
-    <textarea id="publicKey" class="form-control" rows="5" oninput="loadRSAKeyPair()"></textarea>
-</div>
-<hr>
 
 <h3> Certificate Message </h3>
 
 <form id="messageForm" class="mb-4">
     <div class="mb-3">
         <label for="SerialNumber" class="form-label">Serial Number</label>
-        <input type="text" id="SerialNumber" class="form-control" placeholder="2024-0001" oninput="createJson()"
-            required>
+        <input type="text" id="SerialNumber" name="serialNumber" class="form-control" placeholder="2024-0001"
+            oninput="createJson()" required>
     </div>
 
     <div class="mb-3">
         <label for="title" class="form-label">Title</label>
-        <input type="text" id="title" class="form-control" oninput="createJson()" placeholder="수료증" required>
+        <input type="text" id="title" name="title" class="form-control" placeholder="수료증" oninput="createJson()"
+            required>
     </div>
 
     <div class="mb-3">
         <label for="name" class="form-label">Name</label>
-        <input type="text" id="name" class="form-control" oninput="createJson()" placeholder="수여자" required>
+        <input type="text" id="name" name="name" class="form-control" placeholder="수여자" oninput="createJson()" required>
     </div>
 
     <div class="mb-3">
         <label for="content" class="form-label">Content</label>
-        <textarea id="content" class="form-control" rows="3" oninput="createJson()"
-            placeholder="위 사람은 GDSC DEU에서 열심히 활동하였으므로 이에 대한 수료증을 발급합니다." required></textarea>
+        <textarea id="content" name="content" class="form-control" rows="3"
+            placeholder="위 사람은 GDSC DEU에서 열심히 활동하였으므로 이에 대한 수료증을 발급합니다." oninput="createJson()" required></textarea>
     </div>
 
     <div class="mb-3">
         <label for="date" class="form-label">Date</label>
-        <input type="date" id="date" class="form-control" oninput="createJson()" required>
+        <input type="date" id="date" name="date" class="form-control" oninput="createJson()" required>
     </div>
 
     <div class="mb-3">
         <label for="organization" class="form-label">Creator</label>
-        <input type="text" id="organization" class="form-control" oninput="createJson()"
+        <input type="text" id="organization" name="organization" class="form-control" oninput="createJson()"
             placeholder="GDSC DEU 23-24 Lead" required>
     </div>
 
-
     <div class="mb-3">
         <label for="creator" class="form-label">Creator</label>
-        <input type="text" id="creator" class="form-control" oninput="createJson()" placeholder="김남주" required>
+        <input type="text" id="creator" name="creator" class="form-control" oninput="createJson()" placeholder="김남주"
+            required>
     </div>
 
     <div class="mb-3">
         <label for="template" class="form-label">Template Type</label>
-        <select id="template" class="form-select" oninput="createJson()" required>
+        <select id="template" name="template" class="form-select" oninput="createJson()" required>
             <option value="gdsc_deu_23-24.pptx">GDSC DEU 23-24</option>
             <option value="award.pptx">Award</option>
         </select>
     </div>
-
 </form>
+
+
+<div class="mb-4">
+    <label for="privateKey" class="form-label">RSA Private Key (발급자용)</label>
+    <textarea id="privateKey" class="form-control" rows="5" oninput="loadRSAKeyPair()"></textarea>
+    <div class="invalid-feedback">
+        Please provide a valid RSA Private Key.
+    </div>
+</div>
 
 <hr>
 <h3> JWS Code </h3>
@@ -108,5 +121,5 @@ title: JWS Certificate Verification
 
 <div class="mb-3">
     <label for="jws_code" class="form-label">JWS Code</label>
-    <textarea id="jws_code" class="form-control" rows="5"></textarea>
+    <textarea id="jws_code" class="form-control" rows="5" readonly></textarea>
 </div>

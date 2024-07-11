@@ -1,0 +1,40 @@
+---
+# Feel free to add content and custom Front Matter to this file.
+# To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
+
+layout: post
+permalink: /rsa-key-gen
+title: RSA Key Generation
+---
+
+<head>
+    <!--  RSA Encryption and Decryption -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/11.1.0/jsrsasign-all-min.js"
+        integrity="sha512-Eu9j+HZBor7muHf6IDWoWZ8FKVr6nKe9eIIVR28NEte4Y4GiYRlke26XGdR/re81XE/FfLoLYYVkvNk5GY9RvQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+    <script src="/Digital-Signature-Certification-Generator/assets/js/signature.js"></script>
+
+</head>
+
+<h1 class="mb-4">RSA Key Generation </h1>
+
+<p class="lead"> 인증서에 사용할 RSA 키 쌍을 생성하는 페이지입니다. </p>
+
+<div class="mb-3">
+    <button type="button" class="btn btn-primary" onclick="createRSAKeyPair()">Create RSA Key Pair</button>
+    <button type="button" class="btn btn-secondary" onclick="downloadRSAKeyPair()">Download RSA Key Pair</button>
+</div>
+
+<br>
+
+<div class="mb-4">
+    <label for="privateKey" class="form-label">RSA Private Key (발급자용)</label>
+    <textarea id="privateKey" class="form-control" rows="5" oninput="loadRSAKeyPair()"></textarea>
+</div>
+
+<div class="mb-4">
+    <label for="publicKey" class="form-label">RSA Public Key (검증 홈페이지용)</label>
+    <textarea id="publicKey" class="form-control" rows="5" oninput="loadRSAKeyPair()"></textarea>
+</div>

@@ -1,6 +1,12 @@
+# How to Use
+- name: How-to-Use
+  link: /how-to-use
+# RSA Key Generation
+- name: RSA-Key-Gen 
+  link: /rsa-key-gen
 # Generate Certification 
-- name: generate
+- name: Certification-Generater
   link: /generate
 # Verify Certification
-- name: verify
+- name: Certification-Verifier
   link: /verify

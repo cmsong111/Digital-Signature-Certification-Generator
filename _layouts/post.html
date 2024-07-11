@@ -1,18 +1,15 @@
 {% include head.html %}
-{% include header.html %}
+
 
 <body>
+    {% include header.html %}
 
     <div class="container mt-5">
         {{ content }}
     </div>
 
-    <footer class="footer mt-auto py-3 bg-light">
-        <div class="container">
-            <span class="text-muted">Place footer content here.</span>
-        </div>
-    </footer>
 
+    {% include footer.html %}
 </body>
 
 </html>

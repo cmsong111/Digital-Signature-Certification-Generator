@@ -1,0 +1,20 @@
+---
+# Feel free to add content and custom Front Matter to this file.
+# To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
+
+layout: post
+permalink: /how-to-use
+title: How to Use
+---
+
+<h1 class="mb-4">{{ page.title }}</h1>
+<p class="lead">JWS Based Certificate generater 사용법에 관한 설명입니다.</p>
+
+<div class="list-group">
+    {% for post in site.posts %}
+    <a href="/Digital-Signature-Certification-Generator{{ post.url }}" class="list-group-item list-group-item-action">
+        <h5 class="mb-1">{{ post.title }}</h5>
+        <small>{{ post.date | date: "%Y-%m-%d" }}</small>
+    </a>
+    {% endfor %}
+</div>
