@@ -41,6 +41,70 @@ title: JWS Certificate Verification
             document.getElementById("privateKey").innerText = public_key;
             createJson()
         }
+
+        // form에 input 형식 추가
+        function addInputForm(name, type) {
+            // form을 가져옴
+            const form = document.getElementById("messageForm");
+
+            // div 생성
+            const div = document.createElement("div");
+            div.className = "mb-3";
+            div.id = name + "_div";
+
+            // div 생성
+            const label_div = document.createElement("div");
+            label_div.className = "rows d-flex justify-content-between";
+            div.appendChild(label_div);
+
+            // 라벨을 생성
+            const label = document.createElement("label");
+            label.htmlFor = name;
+            label.className = "form-label";
+            label.innerText = name;
+            label_div.appendChild(label);
+
+            // 삭제 버튼을 생성
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "btn btn-danger mb-1";
+            button.innerText = "삭제";
+            button.onclick = function () {
+                removeInputForm(name + "_div");
+            }
+            label_div.appendChild(button);
+
+
+            // input을 생성
+            const input = document.createElement("input");
+            input.id = name;
+            input.type = type;
+            input.name = name;
+            input.className = "form-control";
+            input.placeholder = name;
+            input.oninput = createJson;
+            input.required = true;
+            div.appendChild(input);
+
+            // form에 추가
+            form.appendChild(div);
+
+            createJson();
+        }
+
+        // form input 요소 삭제
+        function removeInputForm(name) {
+            // form을 가져옴
+            const form = document.getElementById("messageForm");
+
+            // input을 삭제
+            const input = document.getElementById(name);
+            form.removeChild(input);
+
+            createJson();
+        }
+
+
     </script>
 
 </head>
@@ -53,51 +117,86 @@ title: JWS Certificate Verification
 
 <h3> Certificate Message </h3>
 
+
+
+
+
+
+<!-- json에 들어갈 내용을 추가해서 input form을 추가하는 input, textarea -->
 <form id="messageForm" class="mb-4">
-    <div class="mb-3">
-        <label for="SerialNumber" class="form-label">Serial Number</label>
+    <div class="mb-3" id="SerialNumber_div">
+        <div class="rows d-flex justify-content-between">
+            <label for="SerialNumber" class="form-label">Serial Number</label>
+            <button type="button" class="btn btn-danger mb-1"
+                onclick="removeInputForm(this.parentElement.parentElement.id)">삭제</button>
+        </div>
         <input type="text" id="SerialNumber" name="serialNumber" class="form-control" placeholder="2024-0001"
             oninput="createJson()" required>
     </div>
 
-    <div class="mb-3">
-        <label for="title" class="form-label">Title</label>
+    <div class="mb-3" id="title_div">
+        <div class="rows d-flex justify-content-between">
+            <label for="title" class="form-label">Title</label>
+            <button type="button" class="btn btn-danger mb-1"
+                onclick="removeInputForm(this.parentElement.parentElement.id)">삭제</button>
+        </div>
         <input type="text" id="title" name="title" class="form-control" placeholder="수료증" oninput="createJson()"
             required>
     </div>
 
-    <div class="mb-3">
-        <label for="name" class="form-label">Name</label>
+    <div class="mb-3" id="name_div">
+        <div class="rows d-flex justify-content-between">
+            <label for="name" class="form-label">Name</label>
+            <button type="button" class="btn btn-danger mb-1"
+                onclick="removeInputForm(this.parentElement.parentElement.id)">삭제</button>
+        </div>
         <input type="text" id="name" name="name" class="form-control" placeholder="수여자" oninput="createJson()" required>
     </div>
 
-    <div class="mb-3">
-        <label for="content" class="form-label">Content</label>
+    <div class="mb-3" id="content_div">
+        <div class="rows d-flex justify-content-between">
+            <label for="content" class="form-label">Content</label>
+            <button type="button" class="btn btn-danger mb-1"
+                onclick="removeInputForm(this.parentElement.parentElement.id)">삭제</button>
+        </div>
         <textarea id="content" name="content" class="form-control" rows="3"
             placeholder="위 사람은 GDSC DEU에서 열심히 활동하였으므로 이에 대한 수료증을 발급합니다." oninput="createJson()" required></textarea>
     </div>
 
-    <div class="mb-3">
-        <label for="date" class="form-label">Date</label>
+    <div class="mb-3" id="date_div">
+        <div class="rows d-flex justify-content-between">
+            <label for="date" class="form-label">Date</label>
+            <button type="button" class="btn btn-danger mb-1"
+                onclick="removeInputForm(this.parentElement.parentElement.id)">삭제</button>
+        </div>
         <input type="date" id="date" name="date" class="form-control" oninput="createJson()" required>
     </div>
 
-    <div class="mb-3">
-        <label for="organization" class="form-label">Creator</label>
+    <div class="mb-3" id="organization_div">
+
+        <div class="rows d-flex justify-content-between">
+            <label for="organization" class="form-label">Organization</label>
+            <button type="button" class="btn btn-danger mb-1"
+                onclick="removeInputForm(this.parentElement.parentElement.id)">삭제</button>
+        </div>
         <input type="text" id="organization" name="organization" class="form-control" oninput="createJson()"
             placeholder="GDSC DEU 23-24 Lead" required>
     </div>
 
-    <div class="mb-3">
-        <label for="creator" class="form-label">Creator</label>
+    <div class="mb-3" id="creator_div">
+        <div class="rows d-flex justify-content-between">
+            <label for="creator" class="form-label">Creator</label>
+            <button type="button" class="btn btn-danger mb-1"
+                onclick="removeInputForm(this.parentElement.parentElement.id)">삭제</button>
+        </div>
         <input type="text" id="creator" name="creator" class="form-control" oninput="createJson()" placeholder="김남주"
             required>
     </div>
 
-    <div class="mb-3">
+    <div class="mb-3" id="template_div">
         <label for="template" class="form-label">Template Type</label>
         <select id="template" name="template" class="form-select" oninput="createJson()" required>
-            <option value="gdsc_deu_23-24.pptx">GDSC DEU 23-24</option>
+            <option value="GDSC_23-24_Certificates.pptx">GDSC DEU 23-24</option>
             <option value="award.pptx">Award</option>
         </select>
     </div>
@@ -111,6 +210,31 @@ title: JWS Certificate Verification
         Please provide a valid RSA Private Key.
     </div>
 </div>
+
+<!-- json에 들어갈 내용을 추가해서 input form을 추가하는 input, textarea -->
+<h3> 속성 추가 </h3>
+<form id="additionalForm" class="mb-4">
+    <label for="Additional" class="form-label">추가 속성</label>
+    <!-- 내용 이름 지정 -->
+    <div class="rows d-flex justify-content-between">
+        <input type="text" id="Additional" name="Additional" class="form-control" placeholder="Additional" required>
+
+        <!-- 내용 타입 지정 list: text, date, number, etc... -->
+        <select id="type" name="type" class="form-select" required>
+            <option value="text">Text</option>
+            <option value="date">Date</option>
+            <option value="number">Number</option>
+        </select>
+    </div>
+
+
+    <!-- input button -->
+    <button type="button" class="btn btn-primary" onclick="addInputForm(
+        document.getElementById('Additional').value,
+        document.getElementById('type').value
+    )">추가</button>
+
+</form>
 
 <hr>
 <h3> JWS Code </h3>

@@ -10,7 +10,7 @@ let rsaPrivateKey;
  *  RSA Key Pair 생성
  */
 function createRSAKeyPair() {
-    rsaKeypair = KEYUTIL.generateKeypair("RSA", 1024);
+    rsaKeypair = KEYUTIL.generateKeypair("RSA", 4096);
 
 
     document.getElementById('privateKey').value = KEYUTIL.getPEM(rsaKeypair.prvKeyObj, "PKCS1PRV");

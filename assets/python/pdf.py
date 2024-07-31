@@ -18,7 +18,9 @@ for k, v in data.items():
         if shape.has_text_frame:
             for paragraph in shape.text_frame.paragraphs:
                 for run in paragraph.runs:
-                    run.text = run.text.replace(k, v)
+                    key = "{{ " + k + " }}"
+                    if key in run.text:
+                        run.text = run.text.replace(key, v)
 
 file_name = data["name"] + "-" + data["title"] + ".pptx"
 

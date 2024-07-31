@@ -1,8 +1,8 @@
 packages = ["python-pptx" ]
 
 [[fetch]]
-from = "https://raw.githubusercontent.com/cmsong111/Digital-Signature-Certification-Generator/main/template/gdsc_deu_23-24.pptx"
-name = "gdsc_deu_23-24.pptx"
+from = "https://raw.githubusercontent.com/cmsong111/Digital-Signature-Certification-Generator/main/template/GDSC_23-24_Certificates.pptx"
+name = "GDSC_23-24_Certificates.pptx"
 
 [[fetch]]
 from = "https://raw.githubusercontent.com/cmsong111/Digital-Signature-Certification-Generator/main/template/award.pptx"
